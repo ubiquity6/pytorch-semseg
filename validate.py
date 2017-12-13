@@ -18,7 +18,7 @@ def validate(args):
 
     # Setup Dataloader
     data_loader = get_loader(args.dataset)
-    data_path = get_data_path(args.dataset)
+    data_path = get_data_path(args.dataset, config_file=args.config_file)
     loader = data_loader(data_path, split=args.split, is_transform=True, img_size=(args.img_rows, args.img_cols))
     n_classes = loader.n_classes
     valloader = data.DataLoader(loader, batch_size=args.batch_size, num_workers=4)
@@ -38,7 +38,9 @@ def validate(args):
             labels = Variable(labels)
 
         outputs = model(images)
-        pred = outputs.data.max(1)[1].cpu().numpy()
+        outputs = outputs.data.cpu().numpy()
+        outputs[:, 0] *= 0
+        pred = np.argmax(outputs, axis=1)
         gt = labels.data.cpu().numpy()
         
         for gt_, pred_ in zip(gt, pred):
@@ -59,6 +61,7 @@ if __name__ == '__main__':
                         help='Path to the saved model')
     parser.add_argument('--dataset', nargs='?', type=str, default='pascal', 
                         help='Dataset to use [\'pascal, camvid, ade20k etc\']')
+    parser.add_argument('--config_file', nargs='?', type=str, default='./dataroot/segmentation_path_config.json')
     parser.add_argument('--img_rows', nargs='?', type=int, default=256, 
                         help='Height of the input image')
     parser.add_argument('--img_cols', nargs='?', type=int, default=256, 

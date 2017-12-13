@@ -61,7 +61,7 @@ class MITSceneParsingBenchmarkLoader(data.Dataset):
         img_path = self.files[self.split][index].rstrip()
         lbl_path = os.path.join(self.annotations_base, os.path.basename(img_path)[:-4] + '.png')
 
-        img = m.imread(img_path)
+        img = m.imread(img_path, mode='RGB')
         img = np.array(img, dtype=np.uint8)
 
         lbl = m.imread(lbl_path)
@@ -103,3 +103,24 @@ class MITSceneParsingBenchmarkLoader(data.Dataset):
         lbl = torch.from_numpy(lbl).long()
 
         return img, lbl
+
+    def decode_segmap(self, temp, plot=False):
+        # TODO:(@meetshah1995)
+        # Verify that the color mapping is 1-to-1
+        r = temp.copy()
+        g = temp.copy()
+        b = temp.copy()
+        for l in range(0, self.n_classes):
+            r[temp == l] = 10 * (l%10)
+            g[temp == l] = l
+            b[temp == l] = 0
+
+        rgb = np.zeros((temp.shape[0], temp.shape[1], 3))
+        rgb[:, :, 0] = (r/255.0)
+        rgb[:, :, 1] = (g/255.0)
+        rgb[:, :, 2] = (b/255.0)
+        if plot:
+            plt.imshow(rgb)
+            plt.show()
+        else:
+            return rgb
