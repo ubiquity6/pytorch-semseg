@@ -159,7 +159,7 @@ class cityscapesLoader(data.Dataset):
 
 if __name__ == '__main__':
     import torchvision
-    import matplotlib.pyplot as plt
+    #import matplotlib.pyplot as plt
 
     local_path = '/home/meetshah1995/datasets/cityscapes/'
     dst = cityscapesLoader(local_path, is_transform=True)

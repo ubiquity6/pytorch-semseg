@@ -6,7 +6,7 @@ import torchvision
 import numpy as np
 import scipy.misc as m
 import scipy.io as io
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 from tqdm import tqdm
 from torch.utils import data
