@@ -24,7 +24,9 @@ def train(args):
     data_path = get_data_path(args.dataset, config_file=args.config_file)
     loader = data_loader(data_path, is_transform=True, img_size=(args.img_rows, args.img_cols))
     n_classes = loader.n_classes
-    trainloader = data.DataLoader(loader, batch_size=args.batch_size, num_workers=8, shuffle=True)
+
+    # must use 1 worker for AWS sagemaker without ipc="host" or larger shared memory size
+    trainloader = data.DataLoader(loader, batch_size=args.batch_size, num_workers=1, shuffle=True)
 
     # Setup Model
     model = get_model(args.arch, n_classes)
@@ -40,6 +42,7 @@ def train(args):
 
     step = 0
     for epoch in range(args.n_epoch):
+        start_time = time.time()
         for i, (images, labels) in enumerate(trainloader):
             images = Variable(images.cuda())
             labels = Variable(labels.cuda())
@@ -56,8 +59,11 @@ def train(args):
             step += 1
 
             if (i+1) % 20 == 0:
-                print("Epoch [%d/%d] Loss: %.4f" % (epoch+1, args.n_epoch, loss.data[0]))
+                print("Epoch [%d/%d] Loss: %.4f" % (epoch+1, args.n_epoch, loss.data[0]),
+                      flush=True)
 
+        end_time = time.time()
+        print('Epoch run time: %s' % (end_time - start_time))
         torch.save(model, args.log_dir + "{}_{}_{}_{}.pt".format(args.arch, args.dataset, args.feature_scale, epoch))
 
 
