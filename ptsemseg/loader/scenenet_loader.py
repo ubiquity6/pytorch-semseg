@@ -10,12 +10,7 @@ from torch.utils import data
 
 
 class scenenetLoader(data.Dataset):
-    ''' test source: http://www.doc.ic.ac.uk/~ahanda/SUNRGBD-test_images.tgz
-        train source: http://www.doc.ic.ac.uk/~ahanda/SUNRGBD-train_images.tgz
-        test_labels source: https://github.com/ankurhanda/sunrgbd-meta-data/raw/master/test13labels.tgz
-        train_labels source: https://github.com/ankurhanda/sunrgbd-meta-data/raw/master/train13labels.tgz
-
-        Labels:
+    ''' Labels:
         0   Other / unlabelled
         1   Bed
         2   Books

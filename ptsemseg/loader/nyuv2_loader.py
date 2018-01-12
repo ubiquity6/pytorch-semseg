@@ -12,8 +12,8 @@ from torch.utils import data
 class nyuv2Loader(data.Dataset):
     ''' test source: http://www.doc.ic.ac.uk/~ahanda/nyu_test_rgb.tgz
         train source: http://www.doc.ic.ac.uk/~ahanda/nyu_train_rgb.tgz
-        test_labels source: https://github.com/ankurhanda/nyuv2-meta-data/blob/master/test_labels_13/nyuv2_test_class13.tgz
-        train_labels source: https://github.com/ankurhanda/nyuv2-meta-data/blob/master/train_labels_13/nyuv2_train_class13.tgz
+        test_labels source: https://github.com/ankurhanda/nyuv2-meta-data/raw/master/test_labels_13/nyuv2_test_class13.tgz
+        train_labels source: https://github.com/ankurhanda/nyuv2-meta-data/raw/master/train_labels_13/nyuv2_train_class13.tgz
 
         Labels:
         0   Other / unlabelled
