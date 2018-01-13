@@ -40,7 +40,8 @@ class scenenetLoader(data.Dataset):
 
         for split in ["train", "val"]:
             start = root + '/' + split + '/'
-            folder_list = filter(os.path.isdir, os.listdir(start))
+            folder_list = filter(lambda path: len(path) < 3 and os.path.isdir(start + path),
+                                 os.listdir(start))
             file_list = []
             for f in folder_list:
                 subfolder = start + f + '/'
@@ -51,6 +52,8 @@ class scenenetLoader(data.Dataset):
                     for image in images:
                         file_list.append(photo_dir + image)
             self.files[split] = file_list
+            if split == self.split:
+                print('Found %d images.' % len(file_list))
 
     def __len__(self):
         return len(self.files[self.split])
